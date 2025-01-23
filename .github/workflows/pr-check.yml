@@ -12,6 +12,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set up GitHub CLI
+        uses: actions/setup-gh@v2
+
       - name: Check PR description
         id: check_pr_description
         run: |
