@@ -7,26 +7,34 @@ on:
 
 permissions:
   pull-requests: read
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Setup GitHub CLI
+        run: |
+          gh auth setup-git
+          gh auth status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check PR description
         id: check_pr_description
         run: |
           echo "Checking PR $PR_NUMBER"
-          pr_description=$(gh pr view $PR_NUMBER --json body -q .body)
+          pr_description=$(gh pr view ${{ github.event.pull_request.number }} --json body -q .body)
           if [ -z "$pr_description" ]; then
             echo "Error: Pull request description is empty."
             exit 1
-          else:
+          else
             echo "Pull request description is not empty."
           fi
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
