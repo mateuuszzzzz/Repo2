@@ -1,0 +1,26 @@
+name: Receive Repo1 event
+
+on:
+  repository_dispatch:
+    types: [notify-about-pr-changes]
+
+jobs:
+  print-payload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Event Payload
+        run: |
+          echo "Received event from Repository A!"
+          echo "----------------------------------------"
+          echo "Event Type: ${{ github.event.event_type }}"
+          echo "----------------------------------------"
+          echo "Action: ${{ github.event.client_payload.action }}"
+          echo "PR Number: ${{ github.event.client_payload.pr_number }}"
+          echo "PR State: ${{ github.event.client_payload.pr_state }}"
+          echo "Base Branch: ${{ github.event.client_payload.base_branch }}"
+          echo "Repository: ${{ github.event.client_payload.repo_full_name }}"
+          echo "Sender: ${{ github.event.client_payload.sender }}"
+          echo "Timestamp: ${{ github.event.client_payload.timestamp }}"
+          echo "----------------------------------------"
+          echo "PR Description:"
+          echo "${{ github.event.client_payload.description }}"
