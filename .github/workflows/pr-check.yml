@@ -15,6 +15,7 @@ jobs:
       - name: Check PR description
         id: check_pr_description
         run: |
+          echo "Checking PR $PR_NUMBER"
           pr_description=$(gh pr view $PR_NUMBER --json body -q .body)
           if [ -z "$pr_description" ]; then
             echo "Error: Pull request description is empty."
