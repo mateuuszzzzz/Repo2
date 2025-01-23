@@ -12,8 +12,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up GitHub CLI
-        uses: actions/setup-gh@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install GitHub CLI
+        run: npm install -g @githubnext/github-cli
 
       - name: Check PR description
         id: check_pr_description
@@ -23,8 +28,8 @@ jobs:
           if [ -z "$pr_description" ]; then
             echo "Error: Pull request description is empty."
             exit 1
-          else
+          else:
             echo "Pull request description is not empty."
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}|
