@@ -2,7 +2,6 @@ name: Check PR description
 
 on:
   pull_request:
-    types: [opened, edited, reopened]
     branches:
       - main
 
@@ -27,7 +26,7 @@ jobs:
       - name: Check PR description
         id: check_pr_description
         run: |
-          echo "Checking PR ${{ github.event.pull_request.number }}"
+          echo "Checking PR $PR_NUMBER"
           pr_description=$(gh pr view ${{ github.event.pull_request.number }} --json body -q .body)
           if [ -z "$pr_description" ]; then
             echo "Error: Pull request description is empty."
@@ -38,3 +37,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.number }}
